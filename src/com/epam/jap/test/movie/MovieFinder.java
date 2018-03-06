@@ -15,11 +15,19 @@ public class MovieFinder {
         System.out.println("Loaded " + movieRepository.movieCount() + " movies");
         Scanner scanner = new Scanner(System.in);
         String userInput = "";
+        String command = "";
         String arg = "";
         RepositoryOperation operation = null;
         while (!userInput.equals("Exit")) {
             System.out.println("Your command?");
             userInput = scanner.nextLine();
+            String[] commands = userInput.split("\\s");
+            if (commands.length > 1) {
+                command = commands[0];
+                arg = commands[1];
+            } else {
+                command = commands[0];
+            }
             switch (userInput) {
                 case "ShowMovieCount":
                     operation = new OpMovieCount();
@@ -28,15 +36,12 @@ public class MovieFinder {
                     operation = new OpShowTitles();
                     break;
                 case "FilterByRatingBetterThan":
-                    arg = scanner.nextLine();
                     operation = new OpFilterByRatingBetterThan();
                     break;
                 case "FilterByYearOfProduction":
-                    arg = scanner.nextLine();
                     operation = new OpFilterByYearOfProduction();
                     break;
                 case "FilterByRatingCountMoreThan":
-                    arg = scanner.nextLine();
                     operation = new OpFilterByRatingCountMoreThan();
                     break;
                 case "Reset":
