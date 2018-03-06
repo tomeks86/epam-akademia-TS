@@ -2,33 +2,33 @@ package com.epam.jap.test.movie.domain;
 
 
 public class Movie {
-    static class MovieBuilder {
+    public static class MovieBuilder {
         private String title;
         private Integer yearOfProduction;
         private Double rating;
         private Integer ratingCount;
 
-        MovieBuilder withTitle(String title) {
+        public MovieBuilder withTitle(String title) {
             this.title = title;
             return this;
         }
 
-        MovieBuilder withYearOfProduction(Integer yearOfProduction) {
+        public MovieBuilder withYearOfProduction(Integer yearOfProduction) {
             this.yearOfProduction = yearOfProduction;
             return this;
         }
 
-        MovieBuilder withRating(Double rating) {
+        public MovieBuilder withRating(Double rating) {
             this.rating = rating;
             return this;
         }
 
-        MovieBuilder withRatingCount(Integer ratingCount) {
+        public MovieBuilder withRatingCount(Integer ratingCount) {
             this.ratingCount = ratingCount;
             return this;
         }
 
-        Movie build() {
+        public Movie build() {
             return new Movie(title, yearOfProduction, rating, ratingCount);
         }
     }
