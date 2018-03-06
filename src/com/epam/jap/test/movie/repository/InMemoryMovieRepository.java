@@ -16,12 +16,27 @@ import java.util.stream.Collectors;
 public class InMemoryMovieRepository implements MovieRepository {
     private final List<Movie> movieList;
 
+    @Override
+    public List<Movie> getMovieList() {
+        return movieList;
+    }
+
+    @Override
+    public void showTitles() {
+        movieList.forEach(m -> System.out.println(m.getTitle()));
+    }
+
     public InMemoryMovieRepository() {
         movieList = new LinkedList<>();
     }
 
     public InMemoryMovieRepository(List<Movie> movieList) {
         this.movieList = movieList;
+    }
+
+    @Override
+    public MovieRepository copy() {
+        return new InMemoryMovieRepository(this.movieList);
     }
 
     @Override
