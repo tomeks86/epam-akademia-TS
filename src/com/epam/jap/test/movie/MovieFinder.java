@@ -47,6 +47,10 @@ public class MovieFinder {
                 case "Reset":
                     actualMovieRepository = movieRepository.copy();
                     break;
+                case "Exit":
+                    break;
+                default:
+                    System.out.println("Unknown command");
             }
             if (operation != null) {
                 actualMovieRepository = operation.performOperation(actualMovieRepository, arg);
