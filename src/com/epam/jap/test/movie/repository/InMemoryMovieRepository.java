@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class InMemoryMovieRepository implements MovieRepository {
     private final List<Movie> movieList;
@@ -19,28 +20,65 @@ public class InMemoryMovieRepository implements MovieRepository {
         movieList = new LinkedList<>();
     }
 
+    public InMemoryMovieRepository(List<Movie> movieList) {
+        this.movieList = movieList;
+    }
+
     @Override
     public void loadRepository(String location) {
         Path moviePath = FileSystems.getDefault().getPath(location);
         try (BufferedReader movieFile = Files.newBufferedReader(moviePath)) {
             String line;
             while ((line = movieFile.readLine()) != null) {
-                String[] fields = parseMovie(line);
-                String title = fields[0];
-                Integer yearOfProduction = Integer.valueOf(fields[1]);
-                Double rating = Double.valueOf(fields[2]);
-                Integer ratingCount = Integer.valueOf(fields[3]);
-                Movie movie = new Movie.MovieBuilder()
-                        .withTitle(title)
-                        .withYearOfProduction(yearOfProduction)
-                        .withRating(rating)
-                        .withRatingCount(ratingCount)
-                        .build();
-                movieList.add(movie);
+                if (!line.isEmpty()) {
+                    String[] fields = parseMovie(line);
+                    String title = fields[0];
+                    Integer yearOfProduction = Integer.valueOf(fields[1]);
+                    Double rating = Double.valueOf(fields[2]);
+                    Integer ratingCount = Integer.valueOf(fields[3]);
+                    Movie movie = new Movie.MovieBuilder()
+                            .withTitle(title)
+                            .withYearOfProduction(yearOfProduction)
+                            .withRating(rating)
+                            .withRatingCount(ratingCount)
+                            .build();
+                    movieList.add(movie);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (NumberFormatException e) {
+
         }
+    }
+
+    @Override
+    public int movieCount() {
+        return movieList.size();
+    }
+
+    @Override
+    public MovieRepository filterByRatingBetterThan(double rating) {
+        List<Movie> filtered = movieList.stream()
+                .filter(m -> m.getRating() > rating)
+                .collect(Collectors.toList());
+        return new InMemoryMovieRepository(filtered);
+    }
+
+    @Override
+    public MovieRepository filterByYearOfProduction(int year) {
+        List<Movie> filtered = movieList.stream()
+                .filter(m -> m.getYearOfProduction() == year)
+                .collect(Collectors.toList());
+        return new InMemoryMovieRepository(filtered);
+    }
+
+    @Override
+    public MovieRepository filterByRatingCountMoreThan(int ratingCount) {
+        List<Movie> filtered = movieList.stream()
+                .filter(m -> m.getRatingCount() > ratingCount)
+                .collect(Collectors.toList());
+        return new InMemoryMovieRepository(filtered);
     }
 
     public static String[] parseMovie(String line) {
@@ -57,4 +95,6 @@ public class InMemoryMovieRepository implements MovieRepository {
         }
         return fields;
     }
+
+
 }
