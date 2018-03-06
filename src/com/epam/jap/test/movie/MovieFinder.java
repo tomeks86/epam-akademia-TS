@@ -28,7 +28,7 @@ public class MovieFinder {
             } else {
                 command = commands[0];
             }
-            switch (userInput) {
+            switch (command) {
                 case "ShowMovieCount":
                     operation = new OpMovieCount();
                     break;
