@@ -11,7 +11,7 @@ public class MovieFinder {
     public static void main(String[] args) {
         MovieRepository movieRepository = new InMemoryMovieRepository();
         MovieRepository actualMovieRepository = movieRepository.copy();
-        movieRepository.loadRepository("src/com/epam/jap/test/movie/resources/movies.txt");
+        movieRepository.loadRepository(args[0]);
         System.out.println("Loaded " + movieRepository.movieCount() + " movies");
         Scanner scanner = new Scanner(System.in);
         String userInput = "";
