@@ -2,7 +2,7 @@ package com.epam.jap.test.movie;
 
 import com.epam.jap.test.movie.repository.InMemoryMovieRepository;
 import com.epam.jap.test.movie.repository.MovieRepository;
-import com.epam.jap.test.movie.service.RepositoryOperation;
+import com.epam.jap.test.movie.service.*;
 
 import java.util.Scanner;
 
@@ -15,45 +15,38 @@ public class MovieFinder {
         System.out.println("Loaded " + movieRepository.movieCount() + " movies");
         Scanner scanner = new Scanner(System.in);
         String userInput = "";
-        RepositoryOperation operation;
+        String arg = "";
+        RepositoryOperation operation = null;
         while (!userInput.equals("Exit")) {
             System.out.println("Your command?");
             userInput = scanner.nextLine();
             switch (userInput) {
                 case "ShowMovieCount":
-                    System.out.println(actualMovieRepository.movieCount());
+                    operation = new OpMovieCount();
                     break;
                 case "ShowTitles":
-                    actualMovieRepository.showTitles();
+                    operation = new OpShowTitles();
                     break;
                 case "FilterByRatingBetterThan":
-                    try {
-                        Double rating = Double.valueOf(scanner.nextLine());
-                        actualMovieRepository = actualMovieRepository.filterByRatingBetterThan(rating);
-                    } catch (NumberFormatException e) {
-                        System.out.println("error parsing rating from input");
-                    }
+                    arg = scanner.nextLine();
+                    operation = new OpFilterByRatingBetterThan();
                     break;
                 case "FilterByYearOfProduction":
-                    try {
-                        Integer yearOfProduction = Integer.valueOf(scanner.nextLine());
-                        actualMovieRepository = actualMovieRepository.filterByYearOfProduction(yearOfProduction);
-                    } catch (NumberFormatException e) {
-                        System.out.println("error parsing year of production from input");
-                    }
+                    arg = scanner.nextLine();
+                    operation = new OpFilterByYearOfProduction();
                     break;
                 case "FilterByRatingCountMoreThan":
-                    try {
-                        Integer ratingCount = Integer.valueOf(scanner.nextLine());
-                        actualMovieRepository = actualMovieRepository.filterByRatingCountMoreThan(ratingCount);
-                    } catch (NumberFormatException e) {
-                        System.out.println("error parsing rating count from input");
-                    }
+                    arg = scanner.nextLine();
+                    operation = new OpFilterByRatingBetterThan();
                     break;
                 case "Reset":
                     actualMovieRepository = movieRepository.copy();
                     break;
-//                default:
+            }
+            if (operation != null) {
+                actualMovieRepository = operation.performOperation(actualMovieRepository, arg);
+                operation = null;
+                arg = "";
             }
         }
     }
