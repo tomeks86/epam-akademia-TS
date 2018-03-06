@@ -37,7 +37,7 @@ public class MovieFinder {
                     break;
                 case "FilterByRatingCountMoreThan":
                     arg = scanner.nextLine();
-                    operation = new OpFilterByRatingBetterThan();
+                    operation = new OpFilterByRatingCountMoreThan();
                     break;
                 case "Reset":
                     actualMovieRepository = movieRepository.copy();
