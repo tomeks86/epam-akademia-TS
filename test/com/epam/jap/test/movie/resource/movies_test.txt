@@ -1,0 +1,8 @@
+(Leave It to Beaver,1997,1.2,44)
+(Mortal Kombat: Annihilation,1997,1.9534883720930232,43)
+(Crow: City of Angels, The,1996,1.9487179487179487,39)
+(Bio-Dome,1996,1.903225806451613,31)
+(Barb Wire,1996,1.9333333333333333,30)
+
+some garbage...
+ds
