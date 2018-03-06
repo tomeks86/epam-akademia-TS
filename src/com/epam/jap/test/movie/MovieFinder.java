@@ -2,6 +2,7 @@ package com.epam.jap.test.movie;
 
 import com.epam.jap.test.movie.repository.InMemoryMovieRepository;
 import com.epam.jap.test.movie.repository.MovieRepository;
+import com.epam.jap.test.movie.service.RepositoryOperation;
 
 import java.util.Scanner;
 
@@ -14,6 +15,7 @@ public class MovieFinder {
         System.out.println("Loaded " + movieRepository.movieCount() + " movies");
         Scanner scanner = new Scanner(System.in);
         String userInput = "";
+        RepositoryOperation operation;
         while (!userInput.equals("Exit")) {
             System.out.println("Your command?");
             userInput = scanner.nextLine();
