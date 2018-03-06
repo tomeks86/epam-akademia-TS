@@ -16,12 +16,27 @@ import java.util.stream.Collectors;
 public class InMemoryMovieRepository implements MovieRepository {
     private final List<Movie> movieList;
 
+    @Override
+    public List<Movie> getMovieList() {
+        return movieList;
+    }
+
+    @Override
+    public void showTitles() {
+        movieList.forEach(m -> System.out.println(m.getTitle()));
+    }
+
     public InMemoryMovieRepository() {
         movieList = new LinkedList<>();
     }
 
     public InMemoryMovieRepository(List<Movie> movieList) {
         this.movieList = movieList;
+    }
+
+    @Override
+    public MovieRepository copy() {
+        return new InMemoryMovieRepository(this.movieList);
     }
 
     @Override
@@ -32,23 +47,25 @@ public class InMemoryMovieRepository implements MovieRepository {
             while ((line = movieFile.readLine()) != null) {
                 if (!line.isEmpty()) {
                     String[] fields = parseMovie(line);
-                    String title = fields[0];
-                    Integer yearOfProduction = Integer.valueOf(fields[1]);
-                    Double rating = Double.valueOf(fields[2]);
-                    Integer ratingCount = Integer.valueOf(fields[3]);
-                    Movie movie = new Movie.MovieBuilder()
-                            .withTitle(title)
-                            .withYearOfProduction(yearOfProduction)
-                            .withRating(rating)
-                            .withRatingCount(ratingCount)
-                            .build();
-                    movieList.add(movie);
+                    try {
+                        String title = fields[0];
+                        Integer yearOfProduction = Integer.valueOf(fields[1]);
+                        Double rating = Double.valueOf(fields[2]);
+                        Integer ratingCount = Integer.valueOf(fields[3]);
+                        Movie movie = new Movie.MovieBuilder()
+                                .withTitle(title)
+                                .withYearOfProduction(yearOfProduction)
+                                .withRating(rating)
+                                .withRatingCount(ratingCount)
+                                .build();
+                        movieList.add(movie);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Can't parse this line, skipping: " + line);
+                    }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (NumberFormatException e) {
-
         }
     }
 
